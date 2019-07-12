@@ -1,52 +1,55 @@
 # Integração de Leads (NIDO)
 Manual de Integração
 
+## Itens necessários
+- \_\_ENDPOINT_CLIENTE__
+   - Ex: http://sistemadocliente.nidoimovel.com.br/index.php/api/leadIntegration
+- \_\_TOKEN_CLIENTE__
+   - Toke JWT, Ex: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9uaWRvLmNvbS5iciIsImF1ZCI6Imh0dHA6XC9cL25pZG9pbW92ZWwuY29tLmJyIiwiaWF0IjoxNTQ2MzA4MDAwLCJuYmYiOjE1NDYzMDgwMDAsImRhdGEiOnsiY2xpZW50ZV9pZCI6IjMxIiwiY29kYWdlbmNpYSI6Ik5JIiwid2ViX2NvbmZpZ19pZCI6IjgyIn19.VARfNYjb9yIY7pB01HcUJipMC1HEnaG028307Elfz1s
 
 ## Exemplo CURL
 ```shell
 curl -X POST \
-  http://eod.dev.lan/NI4Developer/index.php/api/leadIntegration \
-  -H 'Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9uaWRvLmNvbS5iciIsImF1ZCI6Imh0dHA6XC9cL25pZG9pbW92ZWwuY29tLmJyIiwiaWF0IjoxNTQ2MzA4MDAwLCJuYmYiOjE1NDYzMDgwMDAsImRhdGEiOnsiY2xpZW50ZV9pZCI6IjMxIiwiY29kYWdlbmNpYSI6Ik5JIiwid2ViX2NvbmZpZ19pZCI6IjgyIn19.VARfNYjb9yIY7pB01HcUJipMC1HEnaG028307Elfz1s' \
+  __ENDPOINT_CLIENTE__ \
+  -H 'Authorization: JWT __TOKEN_CLIENTE__' \
   -H 'Content-Type: application/json' \
   -H 'User-Agent: Nido/1.0.0 Decussi/1.0.0' \
   -d '{
-  "timestamp": "2017-10-23T15:50:30.619Z",
-  "originLeadId": "59ee0fc6e4b043e1b2a6d863",
-  "originListingId": "87027856",
-  "clientListingId": "a40171",
-  "name": "Nome Consumidor",
-  "email": "nome.consumidor@email.com",
-  "ddd": "11",
-  "phone": "999999999",
-  "phoneNumber": "11999999999",
-  "message": "Olá, tenho interesse neste imóvel. Aguardo o contato. Obrigado.",
+  "id": "1598457",
+  "created_at": "2019-01-01 15:59:59",
+  "name": "João da Silva",
+  "email": "joao@meusite.com.br",
+  "phone": "+55 11 3030-2020",
+  "mobile": "+55 11 98080-8080",
+  "property_id": "NI1234",
+  "message": "Olá vi o imóvel NI1234 no seu site",
 }'
 ```
 
 ## Exemplo PHP
 ```php
 $request = new HttpRequest();
-$request->setUrl('http://eod.dev.lan/NI4Developer/index.php/api/leadIntegration');
+$request->setUrl('__ENDPOINT_CLIENTE__');
 $request->setMethod(HTTP_METH_POST);
+
+$body = json_encode(array(
+    "id" => "1598457",
+    "created_at" => "2019-01-01 15:59:59",
+    "name" => "João da Silva",
+    "email" => "joao@meusite.com.br",
+    "phone" => "+55 11 3030-2020",
+    "mobile" => "+55 11 98080-8080",
+    "property_id" => "NI1234",
+    "message" => "Olá vi o imóvel NI1234 no seu site",
+));
 
 $request->setHeaders(array(
   'Content-Type' => 'application/json',
   'User-Agent' => 'Nido/1.0.0 Decussi/1.0.0',
-  'Authorization' => 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9uaWRvLmNvbS5iciIsImF1ZCI6Imh0dHA6XC9cL25pZG9pbW92ZWwuY29tLmJyIiwiaWF0IjoxNTQ2MzA4MDAwLCJuYmYiOjE1NDYzMDgwMDAsImRhdGEiOnsiY2xpZW50ZV9pZCI6IjMxIiwiY29kYWdlbmNpYSI6Ik5JIiwid2ViX2NvbmZpZ19pZCI6IjgyIn19.VARfNYjb9yIY7pB01HcUJipMC1HEnaG028307Elfz1s'
+  'Authorization' => 'JWT __TOKEN_CLIENTE__'
 ));
 
-$request->setBody('{
-  "timestamp": "2017-10-23T15:50:30.619Z",
-  "originLeadId": "59ee0fc6e4b043e1b2a6d863",
-  "originListingId": "87027856",
-  "clientListingId": "a40171",
-  "name": "Nome Consumidor",
-  "email": "nome.consumidor@email.com",
-  "ddd": "11",
-  "phone": "999999999",
-  "phoneNumber": "11999999999",
-  "message": "Olá, tenho interesse neste imóvel. Aguardo o contato. Obrigado.",
-}');
+$request->setBody($body);
 
 try {
   $response = $request->send();
@@ -59,11 +62,24 @@ try {
 
 ## Exemplo C#
 ```C#
-var client = new RestClient("http://eod.dev.lan/NI4Developer/index.php/api/leadIntegration");
+var client = new RestClient("__ENDPOINT_CLIENTE__");
 var request = new RestRequest(Method.POST);
+
 request.AddHeader("Content-Type", "application/json");
 request.AddHeader("User-Agent", "Nido/1.0.0 Decussi/1.0.0");
-request.AddHeader("Authorization", "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9uaWRvLmNvbS5iciIsImF1ZCI6Imh0dHA6XC9cL25pZG9pbW92ZWwuY29tLmJyIiwiaWF0IjoxNTQ2MzA4MDAwLCJuYmYiOjE1NDYzMDgwMDAsImRhdGEiOnsiY2xpZW50ZV9pZCI6IjMxIiwiY29kYWdlbmNpYSI6Ik5JIiwid2ViX2NvbmZpZ19pZCI6IjgyIn19.VARfNYjb9yIY7pB01HcUJipMC1HEnaG028307Elfz1s");
-request.AddParameter("undefined", "{\r\n  \"timestamp\": \"2017-10-23T15:50:30.619Z\",\r\n  \"originLeadId\": \"59ee0fc6e4b043e1b2a6d863\",\r\n  \"originListingId\": \"87027856\",\r\n  \"clientListingId\": \"a40171\",\r\n  \"name\": \"Nome Consumidor\",\r\n  \"email\": \"nome.consumidor@email.com\",\r\n  \"ddd\": \"11\",\r\n  \"phone\": \"999999999\",\r\n  \"phoneNumber\": \"11999999999\",\r\n  \"message\": \"Olá, tenho interesse neste imóvel. Aguardo o contato. Obrigado.\",\r\n}", ParameterType.RequestBody);
+request.AddHeader("Authorization", "JWT __TOKEN_CLIENTE__");
+
+var body = new {
+    "id" = "1598457",
+    "created_at" = "2019-01-01 15:59:59",
+    "name" = "João da Silva",
+    "email" = "joao@meusite.com.br",
+    "phone" = "+55 11 3030-2020",
+    "mobile" = "+55 11 98080-8080",
+    "property_id" = "NI1234",
+    "message" = "Olá vi o imóvel NI1234 no seu site"
+};
+
+request.AddParameter("undefined", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
