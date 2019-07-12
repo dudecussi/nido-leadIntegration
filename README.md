@@ -5,7 +5,17 @@ Manual de Integração
 - \_\_ENDPOINT_CLIENTE__
    - Ex: http://sistemadocliente.nidoimovel.com.br/index.php/api/leadIntegration
 - \_\_TOKEN_CLIENTE__
-   - Toke JWT, Ex: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9uaWRvLmNvbS5iciIsImF1ZCI6Imh0dHA6XC9cL25pZG9pbW92ZWwuY29tLmJyIiwiaWF0IjoxNTQ2MzA4MDAwLCJuYmYiOjE1NDYzMDgwMDAsImRhdGEiOnsiY2xpZW50ZV9pZCI6IjMxIiwiY29kYWdlbmNpYSI6Ik5JIiwid2ViX2NvbmZpZ19pZCI6IjgyIn19.VARfNYjb9yIY7pB01HcUJipMC1HEnaG028307Elfz1s
+   - Token JWT, Ex: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9uaWRvLmNvbS5iciIsImF1ZCI6Imh0dHA6XC9cL25pZG9pbW92ZWwuY29tLmJyIiwiaWF0IjoxNTQ2MzA4MDAwLCJuYmYiOjE1NDYzMDgwMDAsImRhdGEiOnsiY2xpZW50ZV9pZCI6IjMxIiwiY29kYWdlbmNpYSI6Ik5JIiwid2ViX2NvbmZpZ19pZCI6IjgyIn19.VARfNYjb9yIY7pB01HcUJipMC1HEnaG028307Elfz1s
+   
+## Campos do JSON
+- **id**, identificador do lead no site
+- **created_at**, data de criação do lead, formato *YYYY-MM-DD HH:MM:SS*
+- **name**, nome do cliente
+- **email**, email do cliente
+- **phone**, telefone do cliente
+- **mobile**, celular do cliente
+- **property_id**, referência do imóvel, ex: XX1234
+- **message**, mensagem do lead
 
 ## Exemplo CURL
 ```shell
@@ -24,6 +34,35 @@ curl -X POST \
   "property_id": "NI1234",
   "message": "Olá vi o imóvel NI1234 no seu site",
 }'
+```
+## Exemplo Javascript
+```javascript
+var data = {
+   "id": "1598457",
+   "created_at": "2019-01-01 15:59:59",
+   "name": "João da Silva",
+   "email": "joao@meusite.com.br",
+   "phone": "+55 11 3030-2020",
+   "mobile": "+55 11 98080-8080",
+   "property_id": "NI1234",
+   "message": "Olá vi o imóvel NI1234 no seu site",
+};
+
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === 4) {
+    console.log(this.responseText);
+  }
+});
+
+xhr.open("POST", "__ENDPOINT_CLIENTE__");
+xhr.setRequestHeader("Authorization", "JWT __TOKEN_CLIENTE__");
+xhr.setRequestHeader("User-Agent", "Nido/1.0.0 Decussi/1.0.0");
+xhr.setRequestHeader("Content-Type", "application/json");
+
+xhr.send(JSON.stringify(data));
 ```
 
 ## Exemplo PHP
